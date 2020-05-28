@@ -1,3 +1,9 @@
+# Complex Project
+
+## Table of contents
+
+## Results
+
 Sentence length 100; 0.9 temperature; better for generating HTML attributes
 
 ```html
@@ -64,3 +70,15 @@ var avadaModule-expand-button,
 
 https://www.tensorflow.org/tutorials/text/text_generation
 http://karpathy.github.io/2015/05/21/rnn-effectiveness/
+
+## Extra
+
+### Useful commands
+```bash
+jupyter nbconvert --to script *.ipynb
+```
+
+```bash
+find . -type f -name \*.txt -exec cp \{\} /home/jupyter/xseed-test/data/domains \;
+ls | xargs -I{ cat { > /home/jupyter/xseed-test/data/domains.txt
+```

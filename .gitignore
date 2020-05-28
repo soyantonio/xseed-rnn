@@ -1,3 +1,5 @@
 .ipynb_checkpoints
 training_checkpoints*
 imgs
+data/*
+!data/parser.sh
