@@ -16,7 +16,7 @@ for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
 
-# In[ ]:
+# In[2]:
 
 
 texts = []
@@ -45,7 +45,7 @@ for i in range(20):
                 dictionary = dictionary.union(set(formated))
 
 
-# In[3]:
+# In[4]:
 
 
 vocab = sorted(dictionary)
@@ -53,7 +53,7 @@ char2idx = {u:i for i, u in enumerate(vocab)}
 idx2char = np.array(vocab)
 
 
-# In[4]:
+# In[5]:
 
 
 #int_texts = []
@@ -66,7 +66,7 @@ print("Documents #", len(texts))
 print("Text characters #", len(text))
 
 
-# In[5]:
+# In[6]:
 
 
 def split_input_target(chunk):
@@ -75,7 +75,7 @@ def split_input_target(chunk):
     return input_text, target_text
 
 
-# In[6]:
+# In[7]:
 
 
 def get_sequences(txt_int):
@@ -86,7 +86,7 @@ def get_sequences(txt_int):
     return sequences.map(split_input_target)
 
 
-# In[7]:
+# In[8]:
 
 
 # ============================================== Checkpoint ==============================================
@@ -100,7 +100,7 @@ dataset = get_sequences(int_text)
 #    datasets.append(get_sequences(int_text))
 
 
-# In[8]:
+# In[9]:
 
 
 # for input_example, target_example in  datasets[0].take(1):
@@ -109,7 +109,7 @@ for input_example, target_example in  dataset.take(1):
     print ('Target data:', repr(''.join(idx2char[target_example.numpy()])))
 
 
-# In[9]:
+# In[10]:
 
 
 # Batch size
@@ -125,7 +125,7 @@ dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
 #    datasets[i] = datasets[i].shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
 
 
-# In[10]:
+# In[11]:
 
 
 # Length of the vocabulary in chars
@@ -138,7 +138,7 @@ embedding_dim = 256
 rnn_units = 1024
 
 
-# In[11]:
+# In[12]:
 
 
 def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
@@ -154,7 +154,7 @@ def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
     return model
 
 
-# In[12]:
+# In[13]:
 
 
 model = build_model(
@@ -164,13 +164,13 @@ model = build_model(
   batch_size=BATCH_SIZE)
 
 
-# In[13]:
+# In[14]:
 
 
 optimizer = tf.keras.optimizers.Adam()
 
 
-# In[14]:
+# In[15]:
 
 
 @tf.function
@@ -190,12 +190,12 @@ def train_step(inp, target):
 
 
 # Directory where the checkpoints will be saved
-checkpoint_dir = './training_checkpoints3'
+checkpoint_dir = './training_checkpoints4'
 # Name of the checkpoint files
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
 
 # Training step
-EPOCHS = 10
+EPOCHS = 20
 
 for epoch in range(EPOCHS):
     start = time.time()
