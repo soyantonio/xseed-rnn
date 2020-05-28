@@ -186,7 +186,7 @@ def train_step(inp, target):
     return loss
 
 
-# In[ ]:
+# In[15]:
 
 
 # Directory where the checkpoints will be saved
@@ -223,7 +223,7 @@ print("Done")
 model.save_weights(checkpoint_prefix.format(epoch=epoch))
 
 
-# In[ ]:
+# In[16]:
 
 
 print(tf.train.latest_checkpoint(checkpoint_dir))
@@ -236,20 +236,20 @@ model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
 model.build(tf.TensorShape([1, None]))
 
 
-# In[ ]:
+# In[17]:
 
 
 model.summary()
 
 
-# In[ ]:
+# In[43]:
 
 
 def generate_text(model, start_string):
     # Evaluation step (generating text using the learned model)
 
     # Number of characters to generate
-    num_generate = 500
+    num_generate = 2000
 
     # Converting our start string to numbers (vectorizing)
     input_eval = [char2idx[s] for s in start_string]
@@ -257,7 +257,7 @@ def generate_text(model, start_string):
 
     # Empty string to store our results
     text_generated = []
-    temperature = 0.9
+    temperature = 0.8
 
     # Here batch size == 1
     model.reset_states()
@@ -277,7 +277,7 @@ def generate_text(model, start_string):
     return (start_string + ''.join(text_generated))
 
 
-# In[ ]:
+# In[44]:
 
 
 print("Creating")
