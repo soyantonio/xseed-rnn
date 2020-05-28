@@ -186,7 +186,7 @@ def train_step(inp, target):
     return loss
 
 
-# In[15]:
+# In[ ]:
 
 
 # Directory where the checkpoints will be saved
@@ -223,8 +223,10 @@ print("Done")
 model.save_weights(checkpoint_prefix.format(epoch=epoch))
 
 
-# In[16]:
+# In[ ]:
 
+
+print(tf.train.latest_checkpoint(checkpoint_dir))
 
 #'./training_checkpoints2/ckpt_6'
 model = build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
@@ -234,13 +236,13 @@ model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
 model.build(tf.TensorShape([1, None]))
 
 
-# In[17]:
+# In[ ]:
 
 
 model.summary()
 
 
-# In[66]:
+# In[ ]:
 
 
 def generate_text(model, start_string):
@@ -275,7 +277,7 @@ def generate_text(model, start_string):
     return (start_string + ''.join(text_generated))
 
 
-# In[68]:
+# In[ ]:
 
 
 print("Creating")
