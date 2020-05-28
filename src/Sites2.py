@@ -75,18 +75,18 @@ def split_input_target(chunk):
     return input_text, target_text
 
 
-# In[7]:
+# In[21]:
 
 
 def get_sequences(txt_int):
     # Create training examples / targets
-    seq_length = 50
+    seq_length = 80
     char_dataset = tf.data.Dataset.from_tensor_slices(txt_int)
     sequences = char_dataset.batch(seq_length+1, drop_remainder=True)
     return sequences.map(split_input_target)
 
 
-# In[8]:
+# In[22]:
 
 
 # ============================================== Checkpoint ==============================================
@@ -100,7 +100,7 @@ dataset = get_sequences(int_text)
 #    datasets.append(get_sequences(int_text))
 
 
-# In[9]:
+# In[23]:
 
 
 # for input_example, target_example in  datasets[0].take(1):
@@ -109,11 +109,11 @@ for input_example, target_example in  dataset.take(1):
     print ('Target data:', repr(''.join(idx2char[target_example.numpy()])))
 
 
-# In[10]:
+# In[25]:
 
 
 # Batch size
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 
 # Buffer size to shuffle the dataset. Maintains a buffer in which it shuffles elements), not all dataset.
 BUFFER_SIZE = 10000
@@ -125,7 +125,7 @@ dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
 #    datasets[i] = datasets[i].shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
 
 
-# In[11]:
+# In[26]:
 
 
 # Length of the vocabulary in chars
@@ -138,7 +138,7 @@ embedding_dim = 256
 rnn_units = 1024
 
 
-# In[12]:
+# In[27]:
 
 
 def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
@@ -154,7 +154,7 @@ def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
     return model
 
 
-# In[13]:
+# In[28]:
 
 
 model = build_model(
@@ -164,13 +164,13 @@ model = build_model(
   batch_size=BATCH_SIZE)
 
 
-# In[14]:
+# In[29]:
 
 
 optimizer = tf.keras.optimizers.Adam()
 
 
-# In[15]:
+# In[30]:
 
 
 @tf.function
@@ -195,7 +195,7 @@ checkpoint_dir = './training_checkpoints4'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
 
 # Training step
-EPOCHS = 20
+EPOCHS = 12
 
 for epoch in range(EPOCHS):
     start = time.time()
@@ -208,12 +208,12 @@ for epoch in range(EPOCHS):
     for (batch_n, (inp, target)) in enumerate(dataset):
         loss = train_step(inp, target)
         
-        if batch_n % 100 == 0:
+        if batch_n % 1000 == 0:
             template = 'Epoch {} Batch {} Loss {}'
             print(template.format(epoch+1, batch_n, loss))
 
     # saving (checkpoint) the model every 5 epochs
-    if (epoch + 1) % 5 == 0:
+    if (epoch + 1) % 2 == 0:
         model.save_weights(checkpoint_prefix.format(epoch=epoch))
 
     print ('Epoch {} Loss {:.4f}'.format(epoch+1, loss))
