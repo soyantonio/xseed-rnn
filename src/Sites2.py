@@ -23,8 +23,8 @@ texts = []
 dictionary = set()
 text = ''
 
-for i in range(20):
-    for j in range(60):
+for i in range(15):
+    for j in range(49):
         path_to_file = '/home/jupyter/data/g' + str(i) + '/d'+str(j)+'.txt'
             
         file = open(path_to_file, "rb")
@@ -45,7 +45,7 @@ for i in range(20):
                 dictionary = dictionary.union(set(formated))
 
 
-# In[4]:
+# In[3]:
 
 
 vocab = sorted(dictionary)
@@ -53,7 +53,7 @@ char2idx = {u:i for i, u in enumerate(vocab)}
 idx2char = np.array(vocab)
 
 
-# In[5]:
+# In[4]:
 
 
 #int_texts = []
@@ -66,7 +66,7 @@ print("Documents #", len(texts))
 print("Text characters #", len(text))
 
 
-# In[6]:
+# In[5]:
 
 
 def split_input_target(chunk):
@@ -75,7 +75,7 @@ def split_input_target(chunk):
     return input_text, target_text
 
 
-# In[21]:
+# In[6]:
 
 
 def get_sequences(txt_int):
@@ -86,7 +86,7 @@ def get_sequences(txt_int):
     return sequences.map(split_input_target)
 
 
-# In[22]:
+# In[7]:
 
 
 # ============================================== Checkpoint ==============================================
@@ -100,7 +100,7 @@ dataset = get_sequences(int_text)
 #    datasets.append(get_sequences(int_text))
 
 
-# In[23]:
+# In[8]:
 
 
 # for input_example, target_example in  datasets[0].take(1):
@@ -109,11 +109,11 @@ for input_example, target_example in  dataset.take(1):
     print ('Target data:', repr(''.join(idx2char[target_example.numpy()])))
 
 
-# In[25]:
+# In[9]:
 
 
 # Batch size
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 
 # Buffer size to shuffle the dataset. Maintains a buffer in which it shuffles elements), not all dataset.
 BUFFER_SIZE = 10000
@@ -125,7 +125,7 @@ dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
 #    datasets[i] = datasets[i].shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
 
 
-# In[26]:
+# In[10]:
 
 
 # Length of the vocabulary in chars
@@ -138,7 +138,7 @@ embedding_dim = 256
 rnn_units = 1024
 
 
-# In[27]:
+# In[11]:
 
 
 def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
@@ -154,7 +154,7 @@ def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
     return model
 
 
-# In[28]:
+# In[12]:
 
 
 model = build_model(
@@ -164,13 +164,13 @@ model = build_model(
   batch_size=BATCH_SIZE)
 
 
-# In[29]:
+# In[13]:
 
 
 optimizer = tf.keras.optimizers.Adam()
 
 
-# In[30]:
+# In[14]:
 
 
 @tf.function
@@ -208,7 +208,7 @@ for epoch in range(EPOCHS):
     for (batch_n, (inp, target)) in enumerate(dataset):
         loss = train_step(inp, target)
         
-        if batch_n % 1000 == 0:
+        if batch_n % 200 == 0:
             template = 'Epoch {} Batch {} Loss {}'
             print(template.format(epoch+1, batch_n, loss))
 
