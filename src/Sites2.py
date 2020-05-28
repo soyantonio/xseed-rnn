@@ -16,15 +16,15 @@ for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
 
-# In[2]:
+# In[ ]:
 
 
 texts = []
 dictionary = set()
 text = ''
 
-for i in range(2):
-    for j in range(10):
+for i in range(20):
+    for j in range(60):
         path_to_file = '/home/jupyter/data/g' + str(i) + '/d'+str(j)+'.txt'
             
         file = open(path_to_file, "rb")
@@ -63,6 +63,7 @@ int_text = np.array([char2idx[c] for c in text])
 
 print("Vocabulary elements", len(vocab))
 print("Documents #", len(texts))
+print("Text characters #", len(text))
 
 
 # In[5]:
