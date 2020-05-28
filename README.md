@@ -1,8 +1,52 @@
-# Complex Project
+# Generate HTML Code
+
+Implements a network that can generate HTML code. This approach will be based on files written by humans. It does not validate that the code is valid, but it can be implemented in the future. In consequence, it can be complemented with a top layer than can determine valid or not valid code. 
 
 ## Table of contents
+* [Table of contents](#table-of-contents)
+* [Dataset description](#dataset-description)
+* [Steps](#steps)
+  * [Model](#model)
+  * [Cost Function](#cost-function)
+  * [Results](#results)
+    * [Result Group 0](#result-group-0)
+* [References](#references)
+* [Extra](#extra)
+  * [Useful commands](#useful-commands)
 
-## Results
+## Dataset description
+
+The dataset was built on top of https://github.com/tb0hdan/domains, it has **150 Million** domain names. Some of them are not valid anymore. In this repo are provided scripts to fetch all those domain names and save the valid ones. The current dataset has more than **170 thousands** HTML files, they are stored in a VM provisioned by Google Cloud Platform. The size is more than 20GB.
+
+The dataset was built for this project, the model was feeded with more than **20 millions** of characters with 'utf-8' encoding.
+
+## Steps
+### Model
+
+This model was based on a tensorflow article. It implements a RNN, but there are different types of them:
+
+* Vanilla RNN
+* LSTM (Long Short-Term Memory)
+* GRU (Gated Recurrent Units)
+
+```python
+def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
+    model = tf.keras.Sequential([
+        tf.keras.layers.Embedding(vocab_size, embedding_dim,
+                                  batch_input_shape=[batch_size, None]),
+        tf.keras.layers.GRU(rnn_units,
+                            return_sequences=True,
+                            stateful=True,
+                            recurrent_initializer='glorot_uniform'),
+        tf.keras.layers.Dense(vocab_size)
+    ])
+    return model
+```
+
+[⬆️ Return](#table-of-contents)
+
+### Results
+#### Result Group 0
 
 Sentence length 100; 0.9 temperature; better for generating HTML attributes
 
@@ -68,8 +112,17 @@ var avadaModule-expand-button,
 ```
 
 
-https://www.tensorflow.org/tutorials/text/text_generation
-http://karpathy.github.io/2015/05/21/rnn-effectiveness/
+[⬆️ Return](#table-of-contents)
+
+## References
+* https://www.tensorflow.org/tutorials/text/text_generation
+* http://karpathy.github.io/2015/05/21/rnn-effectiveness/
+* https://github.com/tb0hdan/domains
+* https://towardsdatascience.com/animated-rnn-lstm-and-gru-ef124d06cf45
+* https://towardsdatascience.com/illustrated-guide-to-lstms-and-gru-s-a-step-by-step-explanation-44e9eb85bf21
+
+
+[⬆️ Return](#table-of-contents)
 
 ## Extra
 
@@ -82,3 +135,5 @@ jupyter nbconvert --to script *.ipynb
 find . -type f -name \*.txt -exec cp \{\} /home/jupyter/xseed-test/data/domains \;
 ls | xargs -I{ cat { > /home/jupyter/xseed-test/data/domains.txt
 ```
+
+[⬆️ Return](#table-of-contents)
