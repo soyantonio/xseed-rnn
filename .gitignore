@@ -2,4 +2,5 @@
 training_checkpoints*
 imgs
 data/*
+.vscode
 !data/parser.sh
